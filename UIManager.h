@@ -28,6 +28,21 @@
 #define MIN_OPACITY 15
 #define MAX_OPACITY 255
 
+#define STORE_URL L"https://apps.microsoft.com/detail/9PP7NPV7LLW2?hl=en-us&gl=GB&ocid=pdpshare"
+
+struct Vector2
+{
+public:
+	int x;
+	int y;
+
+	Vector2(int X, int Y)
+	{
+		x = X;
+		y = Y;
+	}
+};
+
 class UIManager
 {
 public:
@@ -65,6 +80,10 @@ private:
 	void WriteWindowPos();
 	static LRESULT ChildProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	static INT_PTR AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+	Vector2 GetCentredXYPos(HWND hWnd);
+#ifdef MS_STORE
+	static INT_PTR MsStoreFirstRunProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+#endif
 	static INT_PTR SettingsProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	static INT_PTR OpacityProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	void ForceRepaint();

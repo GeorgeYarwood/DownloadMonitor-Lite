@@ -53,13 +53,13 @@ UIManager::UIManager(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	// Perform application initialization:
 	if (roothWnd == NULL)
 	{
-		MessageBox(NULL, L"Failed to create window, shutting down!", L"NetworkManager", MB_OK);
+		MessageBox(NULL, L"Failed to create window, shutting down!", L"Error", MB_OK);
 		return;
 	}
 
 	if (configManager->failedToInit) //A bit lazy but if we don't have a valid config path, kill the program
 	{
-		MessageBox(NULL, L"Failed to initialise config, is the supplied path valid?", L"NetworkManager", MB_OK);
+		MessageBox(NULL, L"Failed to initialise config, is the supplied path valid?", L"Error", MB_OK);
 		SendMessage(roothWnd, WM_CLOSE, NULL, NULL);
 		return;
 	}
@@ -67,7 +67,11 @@ UIManager::UIManager(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	//Show the first run message if it's our first time running
 	if(!configManager->shownFirstRunMsg)
 	{
+#ifndef MS_STORE
 		DialogBox(instance->hInst, MAKEINTRESOURCE(IDD_FIRSTRUN), roothWnd, AboutProc); //Just re-use this proc as it does the same thing
+#else
+		DialogBox(instance->hInst, MAKEINTRESOURCE(IDD_FIRSTRUN_MSSTORE), roothWnd, MsStoreFirstRunProc); //Just re-use this proc as it does the same thing
+#endif
 		configManager->UpdateShowFirstRunMsg(true);
 	}
 
@@ -477,6 +481,58 @@ INT_PTR CALLBACK UIManager::AboutProc(HWND hDlg, UINT message, WPARAM wParam, LP
 
 	return (INT_PTR)FALSE;
 }
+
+Vector2 UIManager::GetCentredXYPos(HWND hWnd)
+{
+	int currDPI = GetDpiForWindow(hWnd);
+
+	int screenWidth = GetSystemMetricsForDpi(SM_CXSCREEN, currDPI);
+	int screenHeight = GetSystemMetricsForDpi(SM_CYSCREEN, currDPI);
+
+	RECT rc;
+	GetWindowRect(hWnd, &rc);
+
+	int winWidth = rc.right - rc.left;
+	int winHeight = rc.bottom - rc.top;
+
+	int xPos = (screenWidth - winWidth) / 2;
+	int yPos = (screenHeight - winHeight) / 2;
+
+	return Vector2(xPos, yPos);
+}
+
+#ifdef MS_STORE
+INT_PTR CALLBACK UIManager::MsStoreFirstRunProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+		case WM_INITDIALOG:
+		{
+			Vector2 v = instance->GetCentredXYPos(hDlg);
+			SetWindowPos(hDlg, HWND_TOP, v.x, v.y, 0, 0, SWP_NOSIZE);
+			return (INT_PTR)TRUE;
+		}
+
+		case WM_COMMAND:
+		{
+			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
+			if (LOWORD(wParam) == IDC_STORE_LINK)
+			{
+				ShellExecute(NULL, L"open", STORE_URL, NULL, NULL, SW_SHOW);
+				return (INT_PTR)TRUE;
+			}
+			break;
+		}
+	}
+
+	return (INT_PTR)FALSE;
+}
+#endif
 
 INT_PTR CALLBACK UIManager::SettingsProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {

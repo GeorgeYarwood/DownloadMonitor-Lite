@@ -3,11 +3,15 @@
 #include <fstream> 
 #include <string>
 
-const char* defaultConfig = "FOREGROUND_COLOUR=245,242,109\nCHILD_COLOUR=252,248,200\nLAST_POS=1200,0\nOPACITY=230\n";
+const char* defaultConfig = "FOREGROUND_COLOUR=0,0,0\nCHILD_COLOUR=0,0,0\nLAST_POS=1200,0\nOPACITY=230\n";
 
 ConfigManager::ConfigManager(char* configDirOverride)
 {
     customColBuf = (COLORREF*)malloc(16 * sizeof(COLORREF));
+    if (customColBuf)
+    {
+        memset(customColBuf, 0, 16 * sizeof(COLORREF));
+    }
     foregroundColour = (COLORREF*)malloc(sizeof(COLORREF));
     childColour = (COLORREF*)malloc(sizeof(COLORREF));
     configDir = configDirOverride;
@@ -56,7 +60,15 @@ void ConfigManager::GetFullConfigPath(char* buf)
 {
     //Either pass in override dir or use appdata
     char* appdata = getenv("APPDATA");
-    sprintf_s(buf, MAX_PATH, "%s\\%s", configDir ? configDir : appdata, CONFIG_NAME);
+    sprintf_s(buf, MAX_PATH, "%s\\%s\\%s", configDir ? configDir : appdata, FOLDER_NAME, CONFIG_NAME);
+}
+
+void ConfigManager::MakeFolderIfNeeded()
+{
+    char* appdata = getenv("APPDATA");
+    char buf[MAX_PATH];
+    sprintf_s(buf, MAX_PATH, "%s\\%s", appdata, FOLDER_NAME);
+    CreateDirectoryA(buf, NULL);
 }
 
 void ConfigManager::WriteData()
@@ -99,6 +111,8 @@ void ConfigManager::WriteData()
 
 void ConfigManager::ReadData()
 {
+    MakeFolderIfNeeded();
+
     char pathBuf[MAX_PATH];
     GetFullConfigPath(pathBuf);
     std::ifstream configFile(pathBuf);

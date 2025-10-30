@@ -3,6 +3,7 @@
 #include <tuple>
 
 #define CONFIG_NAME "downloadmonitor_config.cfg"
+#define FOLDER_NAME "DownloadMonitor-Lite"
 
 #define FOREGROUND_COLOUR "FOREGROUND_COLOUR"
 #define CHILD_COLOUR "CHILD_COLOUR"
@@ -43,6 +44,8 @@ public:
 	void UpdateShowFirstRunMsg(bool newBool);
 
 	void GetFullConfigPath(char* buf);
+
+	void MakeFolderIfNeeded();
 
 	COLORREF* foregroundColour;
 	COLORREF* childColour;

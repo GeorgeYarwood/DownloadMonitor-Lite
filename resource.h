@@ -23,6 +23,7 @@
 #define IDI_SMALL                       108
 #define IDC_OPACITY_FIELD               108
 #define IDC_OPACITY_SLIDER              108
+#define IDD_FIRSTRUN_MSSTORE            108
 #define IDC_NAME                        109
 #define IDC_DOWNLOAD_APP                109
 #define IDC_OPACITY                     110
@@ -30,6 +31,7 @@
 #define IDI_ICON1                       133
 #define IDI_LOGO                        133
 #define IDC_BUTTON1                     1000
+#define IDC_STORE_LINK                  1000
 #define IDC_WEBLINK                     1005
 #define IDC_STATIC                      -1
 
