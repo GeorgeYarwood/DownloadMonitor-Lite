@@ -24,9 +24,9 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.67969251"
-     inkscape:cx="-318.52639"
-     inkscape:cy="263.35438"
+     inkscape:zoom="0.16992313"
+     inkscape:cx="-1165.2328"
+     inkscape:cy="653.23656"
      inkscape:window-width="2560"
      inkscape:window-height="1377"
      inkscape:window-x="3832"
@@ -47,9 +47,9 @@
        x="12.456612"
        y="34.450321"
        ry="19.268824"
-       inkscape:export-filename="Logo.jpg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-filename="Logo.png"
+       inkscape:export-xdpi="203.2"
+       inkscape:export-ydpi="203.2" />
     <path
        style="fill:#ff0061;fill-opacity:1;stroke-width:4.91224"
        d="M 58.343416,54.719623 25.10786,54.833446 41.83946,38.55713"
@@ -75,5 +75,13 @@
        x="-76.193993"
        y="-96.185951"
        transform="rotate(-179.99949)" />
+    <rect
+       style="fill:#ff00ff;fill-opacity:0.00346021;stroke-width:0.018125"
+       id="rect2437"
+       width="135"
+       height="135"
+       x="-7.3960981"
+       y="9.7317114"
+       ry="0.0096112257" />
   </g>
 </svg>
